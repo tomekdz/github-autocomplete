@@ -1,0 +1,36 @@
+# Only the rules that this project changes. buildUponDefaultConfig keeps the rest.
+
+potential-bugs:
+  # A `when` over a sealed type lists every branch. An `else` hides a new state
+  # from the compiler, and the flat `when` of the UI is the reason for the
+  # sealed states.
+  ElseCaseInsteadOfExhaustiveWhen:
+    active: true
+
+naming:
+  # A Compose function is a noun, therefore it starts with a capital letter.
+  FunctionNaming:
+    ignoreAnnotated: ['Composable']
+
+style:
+  MaxLineLength:
+    maxLineLength: 120
+  ReturnCount:
+    active: false
+  MagicNumber:
+    ignorePropertyDeclaration: true
+    ignoreAnnotated: ['Composable']
+  # A preview function has no caller. The tool of the IDE calls it.
+  UnusedPrivateMember:
+    ignoreAnnotated: ['Preview']
+
+coroutines:
+  # runCatching catches CancellationException, and that breaks the cancellation
+  # that flatMapLatest depends on.
+  SuspendFunSwallowedCancellation:
+    active: true
+
+complexity:
+  LongParameterList:
+    functionThreshold: 7
+    constructorThreshold: 7
