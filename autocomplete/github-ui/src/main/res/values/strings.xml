@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="github_autocomplete_placeholder">Search GitHub</string>
+    <string name="github_result_user">User</string>
+    <string name="github_result_open">Open on GitHub</string>
+
+    <plurals name="github_result_repository">
+        <item quantity="one">%1$s · %2$d star</item>
+        <item quantity="other">%1$s · %2$d stars</item>
+    </plurals>
+</resources>
