@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autocomplete_searching">Searching</string>
+    <string name="autocomplete_no_results">No results</string>
+    <string name="autocomplete_repositories_missing">The repository results are not available.</string>
+    <string name="autocomplete_users_missing">The user results are not available.</string>
+    <string name="autocomplete_error_network">No connection. Check the network, and try again.</string>
+    <string name="autocomplete_error_quota">The quota is spent. Try again later.</string>
+    <string name="autocomplete_error_unauthorized">The service refused the token.</string>
+    <string name="autocomplete_error_unknown">The search failed. Try again.</string>
+
+    <plurals name="autocomplete_error_quota_seconds">
+        <item quantity="one">The quota is spent. Try again in %1$d second.</item>
+        <item quantity="other">The quota is spent. Try again in %1$d seconds.</item>
+    </plurals>
+
+    <plurals name="autocomplete_result_count">
+        <item quantity="one">%1$d result</item>
+        <item quantity="other">%1$d results</item>
+    </plurals>
+</resources>
