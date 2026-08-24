@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build, test, and lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      # No token: every test uses MockWebServer or a fake GitHub search.
+      - name: Build
+        run: ./gradlew assembleDebug
+
+      - name: Unit tests
+        run: ./gradlew test
+
+      - name: Detekt
+        run: ./gradlew detekt
+
+      - name: Spotless
+        run: ./gradlew spotlessCheck
+
+      - name: Android Lint
+        run: ./gradlew lint
+
+      - name: Keep the reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: reports
+          path: |
+            **/build/reports/tests/**
+            **/build/reports/detekt/**
+            **/build/reports/lint-results-*.html
+
+  instrumented:
+    name: Compose tests on an emulator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Give the emulator hardware acceleration
+        uses: actions/github-script@v9
+        with:
+          script: |
+            core.exportVariable('ANDROID_AVD_HOME', `${process.env.HOME}/.android/avd`)
+
+      # The shared GitHub UI owns the Compose behavior, so its tests run here.
+      - name: Compose tests
+        uses: reactivecircus/android-emulator-runner@v2.38.0
+        with:
+          api-level: 34
+          target: aosp_atd
+          arch: x86_64
+          profile: pixel_6
+          script: ./gradlew :autocomplete:ui-compose:connectedDebugAndroidTest
+
+      - name: Keep the reports
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: instrumented-reports
+          path: autocomplete/ui-compose/build/reports/androidTests/**
