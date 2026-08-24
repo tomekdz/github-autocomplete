@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_title">GitHub autocomplete</string>
+    <string name="home_strategy_overfetch">Overfetch</string>
+    <string name="home_strategy_split">Split</string>
+    <string name="home_strategy_overfetch_explanation">Each endpoint gives 50 items. The sort uses 100 items, and 50 remain.</string>
+    <string name="home_strategy_split_explanation">Each endpoint gives 25 items. The sort uses 50 items, and all of them remain.</string>
+</resources>
